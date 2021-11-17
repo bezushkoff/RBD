@@ -1,0 +1,65 @@
+DROP  table Reservstion;
+DROP  table Room;
+DROP  table Ropm_type; 
+DROP  table Guest;
+
+create table if not exists Room (nomer int, 
+tip_nomera int, 
+zah_plosha int, 
+max_kilkisti_osib int,
+ tina_za_dobu float,
+ znishka varchar(20), primary key(nomer));
+ 
+create table if not exists Ropm_type ( id SERIAL primary key,
+ name varchar(50), 
+ opis varchar(200));
+
+create table if not exists Guest (idd SERIAL primary key, 
+surname varchar(50), 
+name_c varchar(50),
+ date_of_birth date, 
+ country varchar(50), 
+ sity varchar(50), 
+ email varchar(50) check (email like '%@%'), 
+ contact_phone varchar(13),
+ posvitcenia_osob varchar(50));
+ 
+create table if not exists Reservstion (id SERIAL primary key, 
+nomer int, 
+klient int, 
+data_bron date,
+data_zaizdu date, 
+data_viezdu date,
+kilkisti_doroslih int, 
+kilkisti_ditei int, 
+oplata int);
+
+INSERT INTO Ropm_type(name, opis)
+VALUES ('СТАНДАРТ', 'Власне, номер класу стандарт – це повний комплекс нашого комфорту і сервісу, без зайвої розкоші.'),
+('ЛЮКС', 'Номери для тих, хто не звик відмовляти собі в чому-небудь, де б не перебував.'),
+('ТВІН', 'У номерах твін є два окремих ліжка. Комфорт і сервіс в цих номерах не поступається рівню стандарту. Є номери з балконом і без.'),
+('СТАНДАРТ ЧОТИРЬОХМІСНИЙ', 'Комфорт і сервіс в цих номерах не поступається рівню стандарту.');
+
+INSERT INTO Guest( surname, name_c, date_of_birth, country, sity, email, contact_phone, posvitcenia_osob)
+VALUES ('PAul', 'ABOBA', '2021-02-02', 'UKR', 'CHERNOVTSI', 'aboba@228email.com', '6645', 'yes' );
+
+INSERT INTO Room(nomer, tip_nomera, zah_plosha, max_kilkisti_osib, tina_za_dobu, znishka)
+VALUES ('111', '1', '18', '2', '1550', '0'),
+('222', '2', '34', '2', '2550', '0'),
+('333', '3', '20', '2', '1550', '0'),
+('444', '4', '30', '4', '2440', '2%');
+
+INSERT INTO Reservstion(nomer, klient, data_bron, data_zaizdu, data_viezdu, kilkisti_doroslih, kilkisti_ditei, oplata)
+VALUES ('111','1', '2021-02-02', '2021-02-02', '2021-03-02', '2', '0', '1550');
+
+alter table Reservstion add foreign key (klient) references Guest (idd);
+alter table Room add foreign key (tip_nomera) references Ropm_type (id);
+alter table Reservstion add foreign key (nomer) references Room (nomer);
+
+
+
+--select *from Guest;
+--select *from Room;
+--select *from Ropm_type;
+select *from Reservstion;
+
