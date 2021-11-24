@@ -2,6 +2,8 @@ DROP  table Reservstion;
 DROP table Room;
 DROP  table Ropm_type; 
 DROP  table Guest;
+DROP table T1;
+DROP table T2;
 
 create table if not exists Room (nomer int, 
 tip_nomera int, 
@@ -68,12 +70,35 @@ alter table Reservstion add foreign key (nomer) references Room (nomer) on updat
 INSERT INTO Guest( surname, name_c, date_of_birth, country, sity, email, contact_phone, posvitcenia_osob)
 VALUES ('Oloer', 'Sasha', '1999-09-07', 'UKR', 'Lviv', 'Sasha@1email.com', '0597554831', 'yes' ),
 ('Roel', 'David', '1989-02-01', 'UKR', 'Lviv', 'David@22email.com', '0695448732', 'yes' );
-INSERT INTO Guest VALUES('4','FOrd', 'Roma', '1998-07-06', 'UKR', 'Kiev', 'Romanov@007email.com', '0679554321', 'yes');	
-UPDATE Guest SET email ='aboba@228email.com' WHERE name_c ='ABOBA'; 
-UPDATE Guest SET idd = idd+4;
-DELETE FROM Guest surname WHERE (name_c ='Roma'); 
-DELETE FROM Guest WHERE(date_of_birth>='%1999-02-02%');
-DELETE FROM Guest;
+INSERT INTO Guest VALUES('5','FOrd', 'Roma', '1998-07-06', 'UKR', 'Kiev', 'Romanov@007email.com', '0679554321', 'yes');	
+--UPDATE Guest SET email ='aboba@228email.com' WHERE name_c ='ABOBA'; 
+--UPDATE Guest SET idd = idd+4;
+--DELETE FROM Guest surname WHERE (name_c ='Roma'); 
+--DELETE FROM Guest WHERE(date_of_birth>='%1999-02-02%');
+--DELETE FROM Guest;
+
+/*
+COPY Guest(surname, name_c)
+FROM 'D:\Fail\qwerty.csv'
+DELIMITER','
+CSV HEADER;
+select *from Guest;
+*/
+
+                 --ЛР№5--
+CREATE TABLE IF NOT EXISTS T1(numbers int primary key, texxt varchar(20));
+CREATE TABLE IF NOT EXISTS T2(numbers int primary key, texxt varchar(20));
+				 
+INSERT INTO T1 VALUES('1','A'),('2','B'),('3','B');
+INSERT INTO T2 VALUES('2','B'),('3','B'),('5','F');
+
+--SELECT *FROM T1 UNION SELECT *FROM T2;
+--SELECT *FROM T1 UNION ALL SELECT *FROM T2;
+--SELECT *FROM T1 INTERSECT SELECT *FROM T2;
+--SELECT * FROM T1 EXCEPT SELECT * FROM T2;
+--SELECT *FROM T1,T2;
+--select *from T1;
+--select *from T2;
 
 select *from Guest ORDER BY idd ASC;
 --select *from Room;
