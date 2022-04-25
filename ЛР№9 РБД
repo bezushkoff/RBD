@@ -1,0 +1,186 @@
+--DROP VIEW GuestVIEW;
+--DROP VIEW Nomera;
+DROP table Reservstion;
+DROP table Room;
+DROP table Ropm_type; 
+DROP table Guest;
+
+--DROP table T1;
+--DROP table T2;
+
+create table if not exists Room (nomer int, 
+tip_nomera int, 
+zah_plosha int, 
+max_kilkisti_osib int,
+ tina_za_dobu float,
+ znishka varchar(20), primary key(nomer));
+ 
+create table if not exists Ropm_type ( id SERIAL primary key,
+ name varchar(50), 
+ opis varchar(200));
+
+create table if not exists Guest (idd SERIAL primary key, 
+surname varchar(50), 
+name_c varchar(50),
+ date_of_birth date, 
+ country varchar(50), 
+ sity varchar(50), 
+ email varchar(50) check (email like '%@%'), 
+ contact_phone varchar(13),
+ posvitcenia_osob varchar(50));
+ 
+create table if not exists Reservstion (id SERIAL primary key, 
+nomer int, 
+klient int, 
+data_bron date,
+data_zaizdu date, 
+data_viezdu date,
+kilkisti_doroslih int, 
+kilkisti_ditei int, 
+oplata int);
+
+INSERT INTO Ropm_type(name, opis)
+VALUES ('СТАНДАРТ', 'Власне, номер класу стандарт – це повний комплекс нашого комфорту і сервісу, без зайвої розкоші.'),
+('ЛЮКС', 'Номери для тих, хто не звик відмовляти собі в чому-небудь, де б не перебував.'),
+('ТВІН', 'У номерах твін є два окремих ліжка. Комфорт і сервіс в цих номерах не поступається рівню стандарту. Є номери з балконом і без.'),
+('СТАНДАРТ ЧОТИРЬОХМІСНИЙ', 'Комфорт і сервіс в цих номерах не поступається рівню стандарту.');
+
+INSERT INTO Guest( surname, name_c, date_of_birth, country, sity, email, contact_phone, posvitcenia_osob)
+VALUES ('PAul', 'ABOBA', '1999-02-02', 'UKR', 'CHERNOVTSI', 'aboba@228email.ru', '0578334952', 'yes' ),
+('Oloer', 'Sasha', '1999-09-07', 'UKR', 'Lviv', 'Sasha@1email.com', '0597554831', 'yes' ),
+('Roel', 'David', '1989-02-01', 'UKR', 'Lviv', 'David@22email.com', '0695448732', 'yes' ),
+('FOrd', 'Roma', '1998-07-06', 'UKR', 'Kiev', 'Romanov@007email.com', '0679554321', 'yes'),
+('Lavrin', 'Bojemir', '1997-01-06', 'UKR', 'Kiev', 'Bojemir@020email.com', '06795234321', 'yes'),
+('Kuhar', 'Esfir', '2000-06-06', 'UKR', 'Jitomir', 'Esfir@117email.com', '0677954321', 'no'),
+('Ulinethi', 'Adrian', '1996-06-06', 'UKR', 'Jitomir', 'Adrian@992email.com', '0677955821', 'yes');
+
+INSERT INTO Room(nomer, tip_nomera, zah_plosha, max_kilkisti_osib, tina_za_dobu, znishka)
+VALUES ('111', '1', '18', '2', '1550', '0'),
+('222', '2', '34', '2', '2550', '0'),
+('333', '3', '20', '2', '1550', '0'),
+('444', '4', '30', '4', '2440', '2%'),
+('555', '4', '32','4', '2500','0');
+
+INSERT INTO Room(nomer, tip_nomera, zah_plosha, max_kilkisti_osib, tina_za_dobu)
+VALUES('669', '1', '20', '2', '1337');
+
+INSERT INTO Reservstion(nomer, klient, data_bron, data_zaizdu, data_viezdu, kilkisti_doroslih, kilkisti_ditei, oplata)
+VALUES ('111','1', '2021-02-02', '2021-02-02', '2021-03-02', '2', '0', '1550'),
+('222', '2', '2022-03-22', '2022-03-23', '2022-04-01', '2', '0', '2550'),
+('444', '3', '2022-03-23', '2022-03-23', '2022-03-31', '3', '1', '2440'),
+('333', '7', '2022-03-30', '2022-03-31', '2022-04-25', '2', '0', '1550');
+
+
+alter table Reservstion add foreign key (klient) references Guest (idd) on update cascade on delete cascade;
+alter table Room add foreign key (tip_nomera) references Ropm_type (id) on update cascade on delete cascade;
+alter table Reservstion add foreign key (nomer) references Room (nomer) on update cascade on delete cascade;
+
+                 --ЛР№3--
+--ALTER TABLE Reservstion DROP FOREIGN KEY nomer;
+--alter table Room drop column znishka;
+--alter table Ropm_type rename column opis to opiss;
+--alter table Room add column znishka varchar(20);
+--alter table Reservstion add foreign key (klient) references Guest (idd);
+
+                 --ЛР№4--
+--INSERT INTO Guest( surname, name_c, date_of_birth, country, sity, email, contact_phone, posvitcenia_osob)
+--VALUES ('Oloer', 'Sasha', '1999-09-07', 'UKR', 'Lviv', 'Sasha@1email.com', '0597554831', 'yes' ),
+--('Roel', 'David', '1989-02-01', 'UKR', 'Lviv', 'David@22email.com', '0695448732', 'yes' );
+--INSERT INTO Guest VALUES('5','FOrd', 'Roma', '1998-07-06', 'UKR', 'Kiev', 'Romanov@007email.com', '0679554321', 'yes');	
+--UPDATE Guest SET email ='aboba@228email.com' WHERE name_c ='ABOBA'; 
+--UPDATE Guest SET idd = idd+4;
+--DELETE FROM Guest surname WHERE (name_c ='Roma'); 
+--DELETE FROM Guest WHERE(date_of_birth>='%1999-02-02%');
+--DELETE FROM Guest;
+
+
+--COPY Guest(surname, name_c)
+--FROM 'D:\Fail\qwerty.csv'
+--DELIMITER','
+--CSV HEADER;
+--select *from Guest;
+
+
+                 --ЛР№5--
+--CREATE TABLE IF NOT EXISTS T1(numbers int primary key, texxt varchar(20));
+--CREATE TABLE IF NOT EXISTS T2(numbers int primary key, texxt varchar(20));
+				 
+--INSERT INTO T1 VALUES('1','A'),('2','B'),('3','B');
+--INSERT INTO T2 VALUES('2','B'),('3','B'),('5','F');
+
+--SELECT *FROM T1 UNION SELECT *FROM T2;
+--SELECT *FROM T1 UNION ALL SELECT *FROM T2;
+--SELECT *FROM T1 INTERSECT SELECT *FROM T2;
+--SELECT * FROM T1 EXCEPT SELECT * FROM T2;
+--SELECT *FROM T1,T2;
+--select *from T1;
+--select *from T2;
+
+                --ЛР№6--
+--CREATE OR REPLACE VIEW GuestVIEW AS SELECT DISTINCT *FROM Guest ORDER BY idd ASC; 
+--select *from GuestVIEW;
+--select *from GuestVIEW WHERE sity = 'Lviv';
+--Create or replace view Nomera as select distinct name,tina_za_dobu from Room, Ropm_type where id = tip_nomera;
+--select *from Nomera;
+--select Reservstion.nomer, Guest.name_c from Reservstion, Guest where Reservstion.klient = Guest.idd;
+--select Reservstion.nomer, Guest.name_c, Reservstion.data_zaizdu, Reservstion.data_viezdu from Reservstion, Guest where Reservstion.klient = Guest.idd and Reservstion.data_zaizdu > Reservstion.data_viezdu;
+
+                --ЛР№7--
+--(1)--Вивід різних значень 2 з’єднаних таблиць
+--select distinct name_c, nomer from Guest,Reservstion where Guest.idd = Reservstion.klient;
+--(2)--Внутрішнє з’єднання, вивід ім'я та виїзду, яка == сьогоднішня або завтрашня
+--select name_c, data_viezdu from Guest inner join Reservstion on Guest.idd = Reservstion.klient where data_viezdu = date(now()) or data_viezdu= date(now())+1 ;
+--(3)--Вивід 2 з’єднаних таблиць
+--select nomer, name, opis from Ropm_type ,Room where tip_nomera = id;
+--(4)--Зовнішнє з’єднання зліва 2 таблиць
+--select nomer, name, tina_za_dobu from Room left join Ropm_type on tip_nomera = id;
+--(5)--Вивід в діапазоні дат
+--select name_c, date_of_birth from Guest where date_of_birth between'1997-01-02' and '1999-02-02';
+--(6)--Вивід клієнтів які зробили резервацію кімнати(ЗНАЧЕННЯ ЯКІ НЕ == 0)
+--select name_c, nomer from Guest, Reservstion where idd= klient and nomer is not null;
+--(7)--Вивід клієнтів які не зробили резервацію кімнати
+--select name_c from Guest where not exists(select klient from Reservstion where Guest.idd = Reservstion.klient );
+--(8)--Вивід кімнати, в якої знижка без значення(==NULL)
+--select *from Room where znishka is null;
+--(9)--Вивід Клієнтів, в яких ім'я починається на букву А
+--select *from Guest where name_c LIKE 'A%';
+--(10)--Виводить все, що відповідає умові
+--select ALL name from Ropm_type where true;
+--(11)--Виводить всі кімнати, в яких ціна більше за 2000
+--select *from Room where tina_za_dobu = SOME(select tina_za_dobu from Room where tina_za_dobu > 2000)ORDER BY tina_za_dobu ASC;
+--(12)--Виводить клієнта в якого є діти
+--select surname, name_c, kilkisti_ditei from Guest,Reservstion where idd = klient and idd = ANY(select klient from Reservstion where kilkisti_ditei >0);
+--(13)--Виводить клієнтів, які з Чернівців та Києва
+--select name_c, sity from Guest where sity IN('CHERNOVTSI', 'Kiev');
+--(14)--Виводить всі бронювання клієнтів, окрім тих які забронювали кімнату в таких датах('2022-03-22','2022-03-23')
+--select nomer, name_c ,data_bron from Reservstion, Guest where idd=klient and data_bron NOT IN('2022-03-22','2022-03-23');
+--(15)--Виводить результат з'єднання 4 таблиць
+--select surname, name_c, Room.nomer, name from Guest join Reservstion on idd = klient join Room on Reservstion.nomer = Room.nomer join Ropm_type on Room.tip_nomera  = Ropm_type.id; 
+
+				--ЛР№8--
+				
+--select *from Guest order by name_c ASC;          														--Сортування таблиці Клієнт по полю "Ім'я" в порядку зростання
+--select *from Room order by tina_za_dobu DESC;    														--Сортування таблиці Кімната по полю "Ціна" в порядку спадання
+--select *from Guest where sity = 'Lviv' order by name_c ASC ;   										--Вивід всіх клієнтів які проживають у Львові, відсортовано по імені
+--select name_c, count(nomer) from Guest, Reservstion where klient=idd group by name_c;             	--Групування по полю "Ім'я" та кількість бронювань клієнта
+--select sity, count(sity)from Guest group by sity; 													--Групування по місту та вивести їх кількість
+--select name, count(tip_nomera) from Ropm_type, Room where id=tip_nomera group by name;          		--Групування по тип кімнатам та скільки кімнат
+--select name_c, nomer from Guest, Reservstion where idd=klient order by nomer ASC;  					--Вивід клієнта та номер який він забронював, відсортовано по номеру
+--select *from Guest order by name_c, date_of_birth;      												--Відсортована таблиця "Клієнт" по полю ім'я та дата народження
+--select *from Room order by tina_za_dobu DESC limit 3;													--Вивід 3 кімнати відсортовані по ціні
+--select nomer, tip_nomera from Room group by nomer, tip_nomera; 										--Вивід номера кімнати та її тип (Групування по двом полям)
+
+				--ЛР№9--
+
+--select max(tina_za_dobu) from Room;						--Виводить най дорощу кімнату
+--select min(tina_za_dobu) from Room;						--Виводить най дешевшу кімнату
+--select avg(all tina_za_dobu) from Room;					--Виводить середню ціну кімнат 
+--select count(id) from Reservstion;						--Виводить всі резервації
+--select sum(oplata) from Reservstion;						--Виводить суму грошей усіх резервацій
+
+
+--select *from Guest ORDER BY idd ASC;
+--select *from Room;
+--select *from Ropm_type;
+--select *from Reservstion;
+
